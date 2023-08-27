@@ -3,7 +3,6 @@ import Head from "next/head";
 import { NextSeo } from "next-seo";
 import { urlForImage } from "@/lib/sanity/image";
 import Navbar from "@/components/navbar";
-import NavbarAlt from "@/components/navbaralt";
 import { cx } from "@/utils/all";
 // import defaultOG from "../public/img/og-default.jpg";
 
@@ -47,13 +46,9 @@ export default function Layout(props) {
       <div
         className={cx(
           props?.fontStyle,
-          "antialiased text-gray-800 dark:bg-black dark:text-gray-400"
+          "text-gray-800 antialiased dark:bg-black dark:text-gray-400"
         )}>
-        {props.alternate ? (
-          <NavbarAlt {...props} />
-        ) : (
-          <Navbar {...props} />
-        )}
+        <Navbar {...props} />
 
         <div>{children}</div>
 
