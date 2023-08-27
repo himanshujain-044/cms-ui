@@ -82,8 +82,9 @@ export default function Post(props) {
             alt={post.mainImage?.alt || "Thumbnail"}
             loading="eager"
             fill
-            sizes="100vw"
+            sizes="80vw"
             className="object-cover"
+            priority="true"
           />
         )}
       </div>
