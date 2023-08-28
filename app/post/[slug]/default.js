@@ -32,7 +32,7 @@ export default function Post(props) {
     : null;
 
   const AuthorimageProps = post?.author?.image
-    ? urlForImage(post.author.image)
+    ? urlForImage(post?.author.image)
     : null;
 
   return (
@@ -40,18 +40,18 @@ export default function Post(props) {
       <Container className="!pt-0">
         <div className="mx-auto max-w-screen-md ">
           <div className="flex justify-center">
-            <CategoryLabel categories={post.categories} />
+            <CategoryLabel categories={post?.categories} />
           </div>
 
           <h1 className="text-brand-primary mb-3 mt-2 text-center text-3xl font-semibold tracking-tight dark:text-white lg:text-4xl lg:leading-snug">
-            {post.title}
+            {post?.title}
           </h1>
 
           <div className="mt-3 flex justify-center space-x-3 text-gray-500 ">
             <div className="flex items-center gap-3">
               <div className="relative h-10 w-10 flex-shrink-0">
                 {AuthorimageProps && (
-                  <Link href={`/author/${post.author.slug.current}`}>
+                  <Link href={`/author/${post?.author.slug.current}`}>
                     <Image
                       src={AuthorimageProps.src}
                       alt={post?.author?.name}
@@ -64,20 +64,25 @@ export default function Post(props) {
               </div>
               <div>
                 <p className="text-gray-800 dark:text-gray-400">
-                  <Link href={`/author/${post.author.slug.current}`}>
-                    {post.author.name}
-                  </Link>
+                  {post.author && (
+                    <Link
+                      href={`/author/${post?.author.slug.current}`}>
+                      {post?.author.name}
+                    </Link>
+                  )}
                 </p>
                 <div className="flex items-center space-x-2 text-sm">
                   <time
                     className="text-gray-500 dark:text-gray-400"
-                    dateTime={post?.publishedAt || post._createdAt}>
+                    dateTime={post?.publishedAt || post?._createdAt}>
                     {format(
-                      parseISO(post?.publishedAt || post._createdAt),
+                      parseISO(post?.publishedAt || post?._createdAt),
                       "MMMM dd, yyyy"
                     )}
                   </time>
-                  <span>· {post.estReadingTime || "5"} min read</span>
+                  <span>
+                    · {post?.estReadingTime || "5"} min read
+                  </span>
                 </div>
               </div>
             </div>
@@ -88,7 +93,7 @@ export default function Post(props) {
         {imageProps && (
           <Image
             src={imageProps.src}
-            alt={post.mainImage?.alt || "Thumbnail"}
+            alt={post?.mainImage?.alt || "Thumbnail"}
             loading="eager"
             fill
             sizes="80vw"
@@ -100,7 +105,7 @@ export default function Post(props) {
       <Container>
         <article className="mx-auto max-w-screen-md ">
           <div className="prose mx-auto my-3 dark:prose-invert prose-a:text-blue-600">
-            {post.body && <PortableText value={post.body} />}
+            {post?.body && <PortableText value={post?.body} />}
           </div>
           <div className="mb-7 mt-7 flex justify-center">
             <Link
@@ -109,7 +114,7 @@ export default function Post(props) {
               ← View all posts
             </Link>
           </div>
-          {post.author && <AuthorCard author={post.author} />}
+          {post?.author && <AuthorCard author={post?.author} />}
         </article>
       </Container>
       <Container

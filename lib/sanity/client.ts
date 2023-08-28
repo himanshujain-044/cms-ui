@@ -1,11 +1,4 @@
 import {
-  apiVersion,
-  dataset,
-  projectId,
-  useCdn,
-  token
-} from "./config";
-import {
   postquery,
   limitquery,
   paginatedquery,
@@ -21,32 +14,63 @@ import {
   getAll,
   searchquery
 } from "./groq";
-import { createClient } from "next-sanity";
+import { createClient, type ClientConfig } from "next-sanity";
 
-if (!projectId) {
-  console.error(
-    "The Sanity Project ID is not set. Check your environment variables."
-  );
+const config: ClientConfig = {
+  token: process.env.NEXT_PUBLIC_TOKEN_KEY,
+  projectId:
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
+    (process.env.SANITY_STUDIO_PROJECT_ID as string),
+  dataset:
+    process.env.NEXT_PUBLIC_SANITY_DATASET ||
+    ("production" as string),
+  useCdn: process.env.NODE_ENV === "production",
+  apiVersion:
+    process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2023-03-25"
+};
+interface Comment {
+  _id: string;
+  _type: string;
+  _createdAt: string;
+  approved: boolean;
+  comment: string;
+  email: string;
+  firstParentId: string | null;
+  name: string;
+  parentCommentId: string | null;
+  post: {
+    _ref: string;
+    _type: string;
+  };
+  _rev: string;
+  _updatedAt: string;
 }
+export const client = config ? createClient(config) : null;
 
-/**
- * Checks if it's safe to create a client instance, as `@sanity/client` will throw an error if `projectId` is false
- */
-export const client = projectId
-  ? createClient({ projectId, dataset, apiVersion, useCdn, token })
-  : null;
-
-export const fetcher = async ([query, params]) => {
-  return client ? client.fetch(query, params) : [];
+export const fetcher = async ([query, params]: [string, any]) => {
+  if (client) {
+    try {
+      const data = await client.fetch(query, params);
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return null;
+    }
+  }
+  return null;
 };
 
 (async () => {
   if (client) {
-    const data = await client.fetch(getAll);
-    if (!data || !data.length) {
-      console.error(
-        "Sanity returns empty array. Are you sure the dataset is public?"
-      );
+    try {
+      const data = await client.fetch(getAll);
+      if (!data || !data.length) {
+        console.error(
+          "Sanity returns empty array. Are you sure the dataset is public?"
+        );
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   }
 })();
@@ -137,9 +161,16 @@ export async function getPaginatedPosts(limit) {
   }
   return {};
 }
-export async function postCommentByPost(comment) {
+export async function postCommentByPost(
+  comment: Comment
+): Promise<Comment | {}> {
   if (client) {
-    return (await client.create(comment)) || {};
+    try {
+      return (await client.create(comment)) || {};
+    } catch (error) {
+      console.error("Error posting comment:", error);
+      return {};
+    }
   }
   return {};
 }
