@@ -7,7 +7,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "npx prettier . --write",
-    "check": "npx prettier . --check"
+    "check": "npx prettier . --check",
+    "generate-types": "npx groq types lib/sanity/groq.js > types/sanityTypes.d.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
