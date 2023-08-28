@@ -1,7 +1,10 @@
 import Link from "next/link";
 import Container from "@/components/container";
-import PostList from "@/components/postlist";
-import NewsLetter from "@/components/newsletter/NewsLetter";
+import dynamic from "next/dynamic";
+const PostList = dynamic(() => import("@/components/postlist"));
+const NewsLetter = dynamic(() =>
+  import("@/components/newsletter/NewsLetter")
+);
 
 export default function Post({ posts }) {
   return (
@@ -30,9 +33,9 @@ export default function Post({ posts }) {
               <span>View all Posts</span>
             </Link>
           </div>
-          <NewsLetter />{" "}
         </Container>
       )}
+      <NewsLetter />
     </>
   );
 }

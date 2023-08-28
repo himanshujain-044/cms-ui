@@ -1,14 +1,24 @@
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/container";
-import { notFound } from "next/navigation";
-import { PortableText } from "@/lib/sanity/plugins/portabletext";
 import { urlForImage } from "@/lib/sanity/image";
+import { notFound } from "next/navigation";
 import { parseISO, format } from "date-fns";
-import AllComments from "@/components/comment/AllComments";
-import AddCommentForm from "@/components/comment/AddCommentForm";
-import CategoryLabel from "@/components/blog/category";
-import AuthorCard from "@/components/blog/authorCard";
+import { PortableText } from "@/lib/sanity/plugins/portabletext";
+
+const AuthorCard = dynamic(() =>
+  import("@/components/blog/authorCard")
+);
+const CategoryLabel = dynamic(() =>
+  import("@/components/blog/category")
+);
+const AddCommentForm = dynamic(() =>
+  import("@/components/comment/AddCommentForm")
+);
+const AllComments = dynamic(() =>
+  import("@/components/comment/AllComments")
+);
 
 export default function Post(props) {
   const { loading, post } = props;
@@ -17,7 +27,6 @@ export default function Post(props) {
   if (!loading && !slug) {
     notFound();
   }
-
   const imageProps = post?.mainImage
     ? urlForImage(post?.mainImage)
     : null;

@@ -1,41 +1,47 @@
 // components/cookiebanner.tsx
 
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { getLocalStorage, setLocalStorage } from '@/lib/storageHelper'
-import { useState, useEffect } from 'react'
+import Link from "next/link";
+import {
+  getLocalStorage,
+  setLocalStorage
+} from "@/lib/storageHelper";
+import { useState, useEffect } from "react";
 export default function CookieBanner() {
-  const [cookieConsent, setCookieConsent] = useState(false)
+  const [cookieConsent, setCookieConsent] = useState(false);
 
   useEffect(() => {
-    const storedCookieConsent = getLocalStorage('cookie_consent', null)
+    const storedCookieConsent = getLocalStorage(
+      "cookie_consent",
+      null
+    );
 
-    setCookieConsent(storedCookieConsent)
-  }, [setCookieConsent])
+    setCookieConsent(storedCookieConsent);
+  }, [setCookieConsent]);
 
   useEffect(() => {
-    const newValue = cookieConsent ? 'granted' : 'denied'
+    const newValue = cookieConsent ? "granted" : "denied";
 
-    window.gtag('consent', 'update', {
+    window.gtag("consent", "update", {
       analytics_storage: newValue
-    })
+    });
 
-    setLocalStorage('cookie_consent', cookieConsent)
-
-    //For Testing
-    console.log('Cookie Consent: ', cookieConsent)
-  }, [cookieConsent])
+    setLocalStorage("cookie_consent", cookieConsent);
+  }, [cookieConsent]);
+  const style =
+    "fixed bottom-0 left-0 right-0  mx-auto my-10 flex max-w-max flex-col items-center justify-between gap-4 rounded-lg bg-gray-700 px-3 py-3 shadow sm:flex-row md:max-w-screen-sm md:px-4";
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0   ${cookieConsent != null ? 'hidden' : 'flex'}
-                        mx-auto my-10 flex max-w-max
-                        flex-col items-center justify-between gap-4 rounded-lg bg-gray-700 px-3 py-3 shadow
-                         sm:flex-row md:max-w-screen-sm md:px-4`}>
+      className={`${
+        cookieConsent != null ? "hidden" : "flex"
+      } ${style}`}>
       <div className="text-center">
         <Link href="/info/cookies">
           <p>
-            We use <span className="font-bold text-sky-400">cookies</span> on our site.
+            We use{" "}
+            <span className="font-bold text-sky-400">cookies</span> on
+            our site.
           </p>
         </Link>
       </div>
@@ -53,5 +59,5 @@ export default function CookieBanner() {
         </button>
       </div>
     </div>
-  )
+  );
 }

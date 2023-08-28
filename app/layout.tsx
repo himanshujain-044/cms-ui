@@ -1,12 +1,15 @@
 import "@/styles/tailwind.css";
+import dynamic from "next/dynamic";
 import { Providers } from "../components/providers";
 import { cx } from "@/utils/all";
 import { Inter, Lora } from "next/font/google";
 import { getSettings } from "@/lib/sanity/client";
-import Footer from "@/components/footer";
-import Navbar from "@/components/navbar";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import CookieBanner from "@/components/cookiebanner";
+const Navbar = dynamic(() => import("@/components/navbar"));
+const CookieBanner = dynamic(
+  () => import("@/components/cookiebanner")
+);
+const Footer = dynamic(() => import("@/components/footer"));
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter"
@@ -45,7 +48,7 @@ export default async function Layout({
         className="text-gray-800 antialiased dark:bg-black dark:text-gray-400">
         <Providers>
           <Navbar {...settings} />
-          <div>{children}</div>
+          {children}
           <Footer {...settings} />
           <CookieBanner />
         </Providers>
