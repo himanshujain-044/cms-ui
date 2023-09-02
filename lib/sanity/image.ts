@@ -1,6 +1,12 @@
 import createImageUrlBuilder from "@sanity/image-url";
-import { dataset, projectId } from "@/lib/sanity/config";
-const imageBuilder = createImageUrlBuilder({ projectId, dataset });
+
+const imageBuilder = createImageUrlBuilder({
+  projectId:
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
+    (process.env.SANITY_STUDIO_PROJECT_ID as string),
+  dataset:
+    process.env.NEXT_PUBLIC_SANITY_DATASET || ("production" as string)
+});
 
 export const urlForImage = source => {
   if (!source || !source.asset) return;
@@ -13,7 +19,7 @@ export const urlForImage = source => {
   const url = imageBuilder
     ?.image(source)
     ?.auto("format")
-    ?.width(Math.min(width, "2000"))
+    ?.width(Math.min(width, 2000))
     ?.url();
 
   return {

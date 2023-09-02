@@ -1,6 +1,6 @@
 import AddComment from "./AddCommentForm";
 import { useState } from "react";
-import parser from "../../lib/snarkdown.js";
+import parser from "@/lib/snarkdown";
 
 export default function Comment({ comment, firstParentId }) {
   //console.log(`comment single`, comment)
