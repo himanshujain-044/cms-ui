@@ -34,14 +34,14 @@ export default async function Layout({
       <head>
         <meta
           name="p:domain_verify"
-          content="23e3bb1046c70a90bcfe8630e33f96e3"
+          content="3a0692f26b4ae61a2bdbf7d7dcfa99da"
         />
         {process.env.NODE_ENV === "production" && (
           <script
             async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         )}
-        <GoogleAnalytics GA_MEASUREMENT_ID="G-W5ZKTJY3EP" />
+        <GoogleAnalytics GA_MEASUREMENT_ID="G-5J9R9S1DE4" />
       </head>
       <body
         suppressHydrationWarning={true}
